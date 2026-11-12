@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BHARAT SCOPE — Neon Digital News Network</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #05070c;
+      --bg-card: #0c101a;
+      --bg-glass: rgba(12, 16, 26, 0.9);
+      --text-main: #f8fafc;
+      --text-dim: #94a3b8;
+      --neon-cyan: #00f3ff;
+      --neon-pink: #ff007f;
+      --neon-green: #00ff9d;
+      --border-neon: rgba(0, 243, 255, 0.25);
+      --glow-cyan: 0 0 20px rgba(0, 243, 255, 0.4);
+      --glow-pink: 0 0 20px rgba(255, 0, 127, 0.4);
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.92);
+      --text-main: #0f172a;
+      --text-dim: #64748b;
+      --border-neon: rgba(15, 23, 42, 0.15);
+      --glow-cyan: 0 0 15px rgba(0, 102, 255, 0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    [dir="rtl"] body {
+      font-family: 'Noto Nastaliq Urdu', 'Inter', serif;
+      line-height: 2.1;
+    }
+
+    /* Breaking Ticker */
+    .ticker-bar {
+      background: linear-gradient(90deg, #12061b, #051624, #12061b);
+      border-bottom: 1px solid var(--border-neon);
+      height: 38px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      font-size: 0.82rem;
+    }
+
+    .ticker-tag {
+      background: var(--neon-pink);
+      color: #fff;
+      font-weight: 800;
+      padding: 0 14px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 1px;
+      box-shadow: var(--glow-pink);
+      flex-shrink: 0;
+      z-index: 2;
+    }
+
+    .dot {
+      width: 7px; height: 7px;
+      background: #fff;
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    .ticker-scroll {
+      white-space: nowrap;
+      padding-left: 100%;
+      animation: marquee 30s linear infinite;
+    }
+
+    .ticker-scroll:hover { animation-play-state: paused; }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-neon);
+    }
+
+    .nav-wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--neon-cyan);
+      box-shadow: var(--glow-cyan);
+      display: grid;
+      place-items: center;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      color: var(--neon-cyan);
+      font-size: 1.1rem;
+      background: rgba(0, 243, 255, 0.05);
+    }
+
+    .logo-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, var(--text-main), var(--neon-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .lang-switch {
+      display: flex;
+      background: var(--bg-card);
+      border: 1px solid var(--border-neon);
+      border-radius: 999px;
+      padding: 2px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .lang-btn.active {
+      background: var(--neon-cyan);
+      color: #05070c;
+      box-shadow: var(--glow-cyan);
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-neon-cyan {
+      background: transparent;
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    .btn-neon-cyan:hover {
+      background: var(--neon-cyan);
+      color: #05070c;
+      box-shadow: var(--glow-cyan);
+    }
+
+    .btn-neon-pink {
+      background: var(--neon-pink);
+      color: #fff;
+      box-shadow: var(--glow-pink);
+    }
+
+    /* Category Bar */
+    .cat-bar {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 8px 16px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      border-top: 1px solid var(--border-neon);
+    }
+
+    .cat-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-neon);
+      color: var(--text-dim);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.2s;
+    }
+
+    .cat-pill:hover, .cat-pill.active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: rgba(0, 243, 255, 0.08);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+    }
+
+    main {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 20px 16px 50px;
+    }
+
+    /* Admin Bar */
+    .admin-bar {
+      display: none;
+      background: rgba(0, 255, 157, 0.08);
+      border: 1px solid var(--neon-green);
+      border-radius: 12px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+
+    .admin-bar.visible { display: flex; }
+
+    /* Neon Hero Featured Banner */
+    .hero-banner {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      min-height: 380px;
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 28px;
+      border: 1.5px solid var(--neon-cyan);
+      box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
+      cursor: pointer;
+    }
+
+    .hero-banner img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .hero-banner:hover img { transform: scale(1.03); }
+
+    .hero-gradient {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 24px;
+      background: linear-gradient(to top, rgba(5, 7, 12, 0.98) 20%, rgba(5, 7, 12, 0.7) 70%, transparent 100%);
+    }
+
+    .neon-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: rgba(0, 243, 255, 0.15);
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      margin-bottom: 8px;
+    }
+
+    .hero-gradient h2 {
+      font-size: 1.5rem;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    /* News Grid */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .news-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-neon);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: 0.25s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 8px 25px rgba(0, 243, 255, 0.15);
+    }
+
+    .card-img {
+      height: 180px;
+      width: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .card-body {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    .card-title:hover { color: var(--neon-cyan); }
+
+    .card-excerpt {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-neon);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .del-btn {
+      display: none;
+      background: rgba(255, 0, 127, 0.15);
+      border: 1px solid var(--neon-pink);
+      color: var(--neon-pink);
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.72rem;
+    }
+
+    body.is-admin .del-btn { display: inline-block; }
+
+    /* Social Share Section */
+    .social-share {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      align-items: center;
+    }
+
+    .social-ico {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-neon);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .social-ico:hover {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+    }
+
+    /* Modals */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 10, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--neon-cyan);
+      box-shadow: var(--glow-cyan);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-neon);
+    }
+
+    .close-x {
+      background: none;
+      border: 1px solid var(--border-neon);
+      color: var(--text-main);
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: var(--bg-dark);
+      border: 1px solid var(--border-neon);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    textarea.input { min-height: 110px; resize: vertical; }
+
+    .preview-box {
+      width: 100%;
+      max-height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--neon-green);
+      color: var(--neon-green);
+      box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      display: none;
+      z-index: 2000;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 16px;
+      border-top: 1px solid var(--border-neon);
+      color: var(--text-dim);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Breaking Ticker -->
+  <div class="ticker-bar">
+    <div class="ticker-tag"><span class="dot"></span> <span id="lblLive">LIVE</span></div>
+    <div style="flex:1; overflow:hidden;">
+      <div class="ticker-scroll" id="tickerText"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-wrap">
+      <div class="logo" onclick="setCategory('All')">
+        <div class="logo-icon">BS</div>
+        <div>
+          <div class="logo-title">BHARAT SCOPE</div>
+          <div style="font-size:0.65rem; color:var(--neon-cyan); letter-spacing:1px;" id="lblTagline">NEON DIGITAL NEWS NETWORK</div>
+        </div>
+      </div>
+
+      <div class="controls-group">
+        <!-- Language Switcher -->
+        <div class="lang-switch">
+          <button class="lang-btn active" onclick="setLang('en', this)">EN</button>
+          <button class="lang-btn" onclick="setLang('hi', this)">हिंदी</button>
+          <button class="lang-btn" onclick="setLang('ur', this)">اردو</button>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button class="btn btn-neon-cyan" onclick="toggleTheme()" title="Day/Night Mode" style="padding:7px 10px;">🌓</button>
+
+        <!-- Admin & Publish -->
+        <button class="btn btn-neon-cyan" id="loginBtn" onclick="openModal('loginModal')">🔐 Admin</button>
+        <button class="btn btn-neon-pink" id="publishBtn" style="display:none;" onclick="openModal('publishModal')">✍️ + Post</button>
+      </div>
+    </div>
+
+    <!-- Category Bar -->
+    <div class="cat-bar" id="catBar">
+      <button class="cat-pill active" onclick="setCategory('All', this)" data-key="catAll">All News</button>
+      <button class="cat-pill" onclick="setCategory('National', this)" data-key="catNational">National</button>
+      <button class="cat-pill" onclick="setCategory('Tech', this)" data-key="catTech">Tech & AI</button>
+      <button class="cat-pill" onclick="setCategory('Engineering', this)" data-key="catEng">Engineering</button>
+      <button class="cat-pill" onclick="setCategory('World', this)" data-key="catWorld">World</button>
+      <button class="cat-pill" onclick="setCategory('Sports', this)" data-key="catSports">Sports</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Admin Active Bar -->
+    <div class="admin-bar" id="adminBar">
+      <div>
+        <span style="color:var(--neon-green); font-weight:700;">● Admin:</span> er.hamid.mep
+        <span style="margin-left:8px; font-size:0.75rem; color:var(--neon-cyan);">(Cloud Live Synced)</span>
+      </div>
+      <button class="btn btn-neon-cyan" style="padding:4px 10px; font-size:0.75rem;" onclick="logoutAdmin()">Logout</button>
+    </div>
+
+    <!-- Neon Hero Featured Banner -->
+    <section class="hero-banner" id="heroBox"></section>
+
+    <!-- News Grid -->
+    <section class="news-grid" id="newsGrid"></section>
+  </main>
+
+  <!-- Admin Login Modal -->
+  <div class="modal" id="loginModal" onclick="if(event.target===this) closeModal('loginModal')">
+    <div class="modal-card" style="max-width:380px;">
+      <div class="modal-head">
+        <h3 style="color:var(--neon-cyan);">🔐 Admin Login</h3>
+        <button class="close-x" onclick="closeModal('loginModal')">✕</button>
+      </div>
+      <form onsubmit="handleLogin(event)">
+        <div class="field">
+          <label>Admin ID</label>
+          <input type="text" id="loginId" class="input" placeholder="er.hamid.mep" required />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="loginPass" class="input" placeholder="Hamid@mep" required />
+        </div>
+        <p id="loginErr" style="color:var(--neon-pink); font-size:0.8rem; margin-bottom:10px; display:none;">Invalid ID or Password!</p>
+        <button type="submit" class="btn btn-neon-pink" style="width:100%; justify-content:center;">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Publish News Modal -->
+  <div class="modal" id="publishModal" onclick="if(event.target===this) closeModal('publishModal')">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 style="color:var(--neon-cyan);">✍️ Post Breaking News</h3>
+        <button class="close-x" onclick="closeModal('publishModal')">✕</button>
+      </div>
+      <form onsubmit="handlePublish(event)">
+        <div class="field">
+          <label>Headline</label>
+          <input type="text" id="newsTitle" class="input" placeholder="Enter headline..." required />
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="field">
+            <label>Category</label>
+            <select id="newsCat" class="input">
+              <option value="National">National</option>
+              <option value="Tech">Tech & AI</option>
+              <option value="Engineering">Engineering</option>
+              <option value="World">World</option>
+              <option value="Sports">Sports</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Language</label>
+            <select id="newsLang" class="input">
+              <option value="en">English</option>
+              <option value="hi">हिंदी</option>
+              <option value="ur">اردو</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Upload Image or URL</label>
+          <input type="file" id="newsFile" accept="image/*" class="input" onchange="previewFile(event)" />
+          <input type="url" id="newsImgUrl" class="input" style="margin-top:6px;" placeholder="https://image-url.com" oninput="previewUrl(this.value)" />
+          <img id="imgPreview" class="preview-box" alt="" />
+        </div>
+        <div class="field">
+          <label>Full Story</label>
+          <textarea id="newsBody" class="input" placeholder="Write full news..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-neon-pink" style="width:100%; justify-content:center;">🚀 Publish Live to Cloud</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Full Article Reader Modal -->
+  <div class="modal" id="readerModal" onclick="if(event.target===this) closeModal('readerModal')">
+    <div class="modal-card" style="max-width:720px;">
+      <div class="modal-head">
+        <span class="neon-badge" id="readCat" style="margin:0;">NEWS</span>
+        <button class="close-x" onclick="closeModal('readerModal')">✕</button>
+      </div>
+      <h2 id="readTitle" style="font-size:1.5rem; margin-bottom:10px;"></h2>
+      <div id="readMeta" style="font-size:0.78rem; color:var(--neon-cyan); margin-bottom:12px;"></div>
+      <img id="readImg" style="width:100%; max-height:300px; object-fit:cover; border-radius:10px; margin-bottom:14px;" alt="" />
+      <div id="readBody" style="white-space:pre-line; font-size:0.98rem; margin-bottom:16px;"></div>
+
+      <!-- Social Share Buttons -->
+      <div style="border-top:1px solid var(--border-neon); padding-top:14px;">
+        <div style="font-size:0.8rem; font-weight:600; color:var(--neon-cyan); margin-bottom:8px;">Share on Social Media:</div>
+        <div class="social-share" id="modalSocialShares"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer>
+    <strong>BHARAT SCOPE</strong> — Neon Digital News Network | Editor: <strong>Er. Hamid MEP</strong>
+  </footer>
+
+  <script>
+    const ADMIN_ID = "er.hamid.mep";
+    const ADMIN_PASS = "Hamid@mep";
+
+    // JSONBin Config
+    const BIN_ID = "6af575c6ac6210605a81b3f9";
+    const API_KEY = "$2a$10$ijpbAIP6ryJkR/P2SjgQ4e.3lvW8rMoq2m5V3zcd3K8c0DXMVJkKe";
+
+    const UI_TEXT = {
+      en: { live: "BREAKING", tagline: "NEON DIGITAL NEWS NETWORK", catAll: "All News", catNational: "National", catTech: "Tech & AI", catEng: "Engineering", catWorld: "World", catSports: "Sports" },
+      hi: { live: "ताज़ा ख़बर", tagline: "भारत का आधुनिक डिजिटल न्यूज़ नेटवर्क", catAll: "सभी खबरें", catNational: "देश", catTech: "टेक और AI", catEng: "इंजीनियरिंग", catWorld: "विदेश", catSports: "खेल" },
+      ur: { live: "بریکنگ نیوز", tagline: "بھارت اسکوپ ڈیجیٹل نیوز نیٹ ورک", catAll: "تمام خبریں", catNational: "قومی", catTech: "ٹیکنالوجی", catEng: "انجینئرنگ", catWorld: "عالمی", catSports: "کھیل" }
+    };
+
+    let newsList = [];
+    let currentLang = "en";
+    let currentCat = "All";
+    let isAdmin = sessionStorage.getItem("bs_admin") === "true";
+    let tempBase64 = "";
+
+    // Fetch News from JSONBin Cloud
+    async function fetchCloudNews() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { "X-Master-Key": API_KEY }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.record) {
+            newsList = data.record;
+            renderNews();
+          }
+        }
+      } catch (e) {
+        showToast("⚠️ Offline Mode (Could not load cloud news)");
+      }
+    }
+
+    // Save News to JSONBin Cloud
+    async function saveCloudNews() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": API_KEY
+          },
+          body: JSON.stringify(newsList)
+        });
+        if (res.ok) {
+          showToast("🚀 Synced Live to Cloud Database!");
+        } else {
+          showToast("⚠️ Cloud Sync Failed");
+        }
+      } catch (e) {
+        showToast("⚠️ Network Error during sync");
+      }
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const theme = html.getAttribute("data-theme") === "light" ? "dark" : "light";
+      html.setAttribute("data-theme", theme);
+    }
+
+    function setLang(lang, btn) {
+      currentLang = lang;
+      document.documentElement.dir = lang === "ur" ? "rtl" : "ltr";
+      document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+
+      const t = UI_TEXT[lang];
+      document.getElementById("lblLive").textContent = t.live;
+      document.getElementById("lblTagline").textContent = t.tagline;
+      document.querySelectorAll(".cat-pill").forEach(p => {
+        const k = p.getAttribute("data-key");
+        if (t[k]) p.textContent = t[k];
+      });
+      renderNews();
+    }
+
+    function setCategory(cat, btn) {
+      currentCat = cat;
+      document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      renderNews();
+    }
+
+    function applyAdminUI() {
+      document.body.classList.toggle("is-admin", isAdmin);
+      document.getElementById("adminBar").classList.toggle("visible", isAdmin);
+      document.getElementById("loginBtn").style.display = isAdmin ? "none" : "inline-flex";
+      document.getElementById("publishBtn").style.display = isAdmin ? "inline-flex" : "none";
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      if (document.getElementById("loginId").value.trim() === ADMIN_ID && document.getElementById("loginPass").value.trim() === ADMIN_PASS) {
+        isAdmin = true;
+        sessionStorage.setItem("bs_admin", "true");
+        closeModal("loginModal");
+        applyAdminUI();
+        showToast("🔓 Welcome Er. Hamid MEP!");
+      } else {
+        document.getElementById("loginErr").style.display = "block";
+      }
+    }
+
+    function logoutAdmin() {
+      isAdmin = false;
+      sessionStorage.removeItem("bs_admin");
+      applyAdminUI();
+      showToast("Logged out");
+    }
+
+    function previewFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = ev => {
+        tempBase64 = ev.target.result;
+        const img = document.getElementById("imgPreview");
+        img.src = tempBase64;
+        img.style.display = "block";
+      };
+      r.readAsDataURL(file);
+    }
+
+    function previewUrl(url) {
+      if (!url) return;
+      tempBase64 = "";
+      const img = document.getElementById("imgPreview");
+      img.src = url;
+      img.style.display = "block";
+    }
+
+    async function handlePublish(e) {
+      e.preventDefault();
+      if (!isAdmin) return;
+      const title = document.getElementById("newsTitle").value.trim();
+      const category = document.getElementById("newsCat").value;
+      const lang = document.getElementById("newsLang").value;
+      const content = document.getElementById("newsBody").value.trim();
+      const image = tempBase64 || document.getElementById("newsImgUrl").value.trim() || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80";
+      const date = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+
+      newsList.unshift({ id: "bs-" + Date.now(), title, category, lang, author: "Er. Hamid MEP", date, image, content });
+      closeModal("publishModal");
+      e.target.reset();
+      document.getElementById("imgPreview").style.display = "none";
+      tempBase64 = "";
+      renderNews();
+      await saveCloudNews();
+    }
+
+    async function deletePost(id) {
+      if (!isAdmin || !confirm("Delete post?")) return;
+      newsList = newsList.filter(n => n.id !== id);
+      renderNews();
+      showToast("🗑️ Deleted");
+      await saveCloudNews();
+    }
+
+    function renderNews() {
+      document.getElementById("tickerText").innerHTML = newsList.map(n => `<span style="margin-right:40px; cursor:pointer;" onclick="openArticle('${n.id}')">⚡ ${n.title}</span>`).join("");
+
+      const filtered = newsList.filter(n => (currentCat === "All" || n.category === currentCat) && (n.lang === currentLang || !n.lang));
+
+      const hero = document.getElementById("heroBox");
+      if (filtered.length > 0) {
+        const top = filtered[0];
+        hero.style.display = "flex";
+        hero.innerHTML = `
+          <img src="${top.image}" alt="" onclick="openArticle('${top.id}')" />
+          <div class="hero-gradient" onclick="openArticle('${top.id}')">
+            <span class="neon-badge">${top.category}</span>
+            <h2>${top.title}</h2>
+            <p style="color:var(--text-dim); font-size:0.82rem;">${top.author} • ${top.date}</p>
+          </div>
+        `;
+      } else {
+        hero.style.display = "none";
+      }
+
+      document.getElementById("newsGrid").innerHTML = filtered.map(n => `
+        <article class="news-card">
+          <img class="card-img" src="${n.image}" alt="" onclick="openArticle('${n.id}')" />
+          <div class="card-body">
+            <div><span class="neon-badge">${n.category}</span></div>
+            <h3 class="card-title" onclick="openArticle('${n.id}')">${n.title}</h3>
+            <p class="card-excerpt">${n.content}</p>
+            <div class="card-footer">
+              <span>${n.date}</span>
+              <div style="display:flex; gap:6px; align-items:center;">
+                <button class="del-btn" onclick="deletePost('${n.id}')">Delete</button>
+              </div>
+            </div>
+            <div class="social-share">
+              <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(n.title)}" target="_blank" class="social-ico" title="Share WhatsApp">💬</a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u=" target="_blank" class="social-ico" title="Share Facebook">📘</a>
+              <a href="https://www.linkedin.com/sharing/share-offsite/?url=" target="_blank" class="social-ico" title="Share LinkedIn">💼</a>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function openArticle(id) {
+      const item = newsList.find(n => n.id === id);
+      if (!item) return;
+      document.getElementById("readCat").textContent = item.category;
+      document.getElementById("readTitle").textContent = item.title;
+      document.getElementById("readMeta").textContent = `By ${item.author} • ${item.date}`;
+      document.getElementById("readImg").src = item.image;
+      document.getElementById("readBody").textContent = item.content;
+
+      const shareUrl = window.location.href;
+      const shareText = encodeURIComponent(item.title);
+      document.getElementById("modalSocialShares").innerHTML = `
+        <a href="https://api.whatsapp.com/send?text=${shareText}" target="_blank" class="social-ico" style="background:#25d366; color:#fff;" title="WhatsApp">💬 WhatsApp</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" class="social-ico" style="background:#1877f2; color:#fff;" title="Facebook">📘 Facebook</a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}" target="_blank" class="social-ico" style="background:#0a66c2; color:#fff;" title="LinkedIn">💼 LinkedIn</a>
+      `;
+
+      openModal("readerModal");
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add("open"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      setTimeout(() => { t.style.display = "none"; }, 3000);
+    }
+
+    applyAdminUI();
+    fetchCloudNews();
+  </script>
+</body>
+</html>
